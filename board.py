@@ -39,16 +39,19 @@ class Board:
     def get_heuristic(self, piece):
         score = 0
         for window in self.get_windows():
-            score += self.check_window(window, piece, 4) * 1000
-            score += self.check_window(window, piece, 3) * 5
+            if self.check_window(window, piece, 4):
+                return 10000
+            if self.check_window(window, piece % 2+1, 4):
+                return -10000
+            score += self.check_window(window, piece, 3) * 100
             score += self.check_window(window, piece, 2) * 1
             score += self.check_window(window, piece % 2+1, 2) * -1
-            score += self.check_window(window, piece % 2+1, 3) * -5
+            score += self.check_window(window, piece % 2+1, 3) * -100
         return score
 
     @classmethod
     def check_window(cls, window, piece, count):
-        return (window.count(piece) == count and window.count(0) == cls.WIN-count)
+        return ((window.count(piece) == count) and (window.count(0) == cls.WIN-count))
 
     def get_windows(self):
         # horizontal
@@ -68,7 +71,6 @@ class Board:
             for col in range(self.COLUMNS - (self.WIN-1)):
                 yield list(self.grid[range(row, row-self.WIN, -1), range(col, col+self.WIN)])
 
-    @property
     def is_terminal(self):
         if list(self.grid[0, :]).count(0) == 0:
             return True

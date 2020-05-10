@@ -18,7 +18,7 @@ class Agent:
         return self.minimax(next_board, 3, False, board.AGENT)
 
     def minimax(self, board, depth, maximizing_agent, piece):
-        if depth == 0 or board.is_terminal:
+        if depth == 0 or board.is_terminal():
             return board.get_heuristic(piece)
 
         valid_moves = board.valid_moves()
