@@ -51,6 +51,7 @@ class Board:
 
     @classmethod
     def check_window(cls, window, piece, count):
+        assert len(window) == cls.WIN
         return ((window.count(piece) == count) and (window.count(0) == cls.WIN-count))
 
     def get_windows(self):
@@ -61,7 +62,7 @@ class Board:
         # vertical
         for row in range(self.ROWS - (self.WIN-1)):
             for col in range(self.COLUMNS):
-                yield list(self.grid[row:row+self.ROWS, col])
+                yield list(self.grid[row:row+self.WIN, col])
         # down-right diagonal
         for row in range(self.ROWS - (self.WIN-1)):
             for col in range(self.COLUMNS - (self.WIN-1)):

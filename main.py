@@ -52,8 +52,9 @@ def main():
                 if col in board.valid_moves():
                     board = board.drop_piece(col, Board.PLAYER)
                     if board.is_win(Board.PLAYER):
-                        label = myfont.render("Player wins!!", 1, Board.RED)
-                        screen.blit(label, (40, 10))
+                        print("Player wins!")
+                        # label = myfont.render("Player wins!!", 1, Board.RED)
+                        # screen.blit(label, (40, 10))
                         game_over = True
                     draw_board(screen, board)
                     turn = turn % 2 + 1
@@ -62,8 +63,9 @@ def main():
             col = agent.move(board)
             board = board.drop_piece(col, Board.AGENT)
             if board.is_win(Board.AGENT):
-                label = myfont.render("Player wins!!", 1, Board.RED)
-                screen.blit(label, (40, 10))
+                print("Agent wins!")
+                # label = myfont.render("Player wins!!", 1, Board.RED)
+                # screen.blit(label, (40, 10))
                 game_over = True
             draw_board(screen, board)
             turn = turn % 2 + 1
