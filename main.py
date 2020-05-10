@@ -8,9 +8,6 @@ from agent import Agent
 def draw_board(screen, board):
     for i, row in enumerate(board.grid):
         for j, el in enumerate(row):
-            pg.draw.rect(screen, Board.BLUE, (j*Board.SQUARESIZE,
-                                              i*Board.SQUARESIZE, Board.SQUARESIZE, Board.SQUARESIZE))
-
             if el == Board.PLAYER:
                 colour = Board.RED
             elif el == Board.AGENT:
@@ -22,15 +19,20 @@ def draw_board(screen, board):
     pg.display.update()
 
 
+def display_message(screen, player_win):
+    font = pg.font.Font(None, 100)
+    message = "You Won!" if player_win else "You Lost!"
+    print(message)
+    label = font.render(message, True, Board.RED)
+    screen.blit(label, (200, Board.HEIGHT))
+
+
 def main():
-    width = Board.COLUMNS * Board.SQUARESIZE
-    height = Board.ROWS * Board.SQUARESIZE
-    size = (width, height)
     pg.init()
+    # Extra space at the bottom to display win/loss message
+    size = (Board.WIDTH, Board.HEIGHT + Board.SQUARESIZE)
     screen = pg.display.set_mode(size=size)
     pg.draw.rect(screen, Board.BLUE, (0, 0, size[0], size[1]))
-
-    myfont = pg.font.SysFont("monospace", 75)
 
     board = Board()
     draw_board(screen, board)
@@ -52,9 +54,7 @@ def main():
                 if col in board.valid_moves():
                     board = board.drop_piece(col, Board.PLAYER)
                     if board.is_win(Board.PLAYER):
-                        print("Player wins!")
-                        # label = myfont.render("Player wins!!", 1, Board.RED)
-                        # screen.blit(label, (40, 10))
+                        display_message(screen, True)
                         game_over = True
                     draw_board(screen, board)
                     turn = turn % 2 + 1
@@ -63,14 +63,12 @@ def main():
             col = agent.move(board)
             board = board.drop_piece(col, Board.AGENT)
             if board.is_win(Board.AGENT):
-                print("Agent wins!")
-                # label = myfont.render("Player wins!!", 1, Board.RED)
-                # screen.blit(label, (40, 10))
+                display_message(screen, False)
                 game_over = True
             draw_board(screen, board)
             turn = turn % 2 + 1
 
-    pg.time.wait(3000)
+    pg.time.wait(5000)
 
 
 if __name__ == '__main__':

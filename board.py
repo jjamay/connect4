@@ -19,6 +19,9 @@ class Board:
     SQUARESIZE = 100
     RADIUS = SQUARESIZE // 2 - 5
 
+    WIDTH = SQUARESIZE * COLUMNS
+    HEIGHT = SQUARESIZE * ROWS
+
     def __init__(self, grid=None):
         if grid is None:
             self.grid = np.zeros((self.ROWS, self.COLUMNS))
@@ -39,10 +42,12 @@ class Board:
     def get_heuristic(self, piece):
         score = 0
         for window in self.get_windows():
+            # speed up the heuristic calc by just returning if we have a win/loss
             if self.check_window(window, piece, 4):
                 return 10000
             if self.check_window(window, piece % 2+1, 4):
                 return -10000
+
             score += self.check_window(window, piece, 3) * 100
             score += self.check_window(window, piece, 2) * 1
             score += self.check_window(window, piece % 2+1, 2) * -1
@@ -74,6 +79,7 @@ class Board:
 
     def is_terminal(self):
         if list(self.grid[0, :]).count(0) == 0:
+            # all positions filled
             return True
 
         if self.is_win(self.PLAYER) or self.is_win(self.AGENT):
