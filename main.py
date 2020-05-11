@@ -78,11 +78,11 @@ def run_game():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sim', action='store_true')
+    parser.add_argument('--sim', nargs='?', type=int, const=10)
 
     args = parser.parse_args()
     if args.sim:
-        run_sim()
+        run_sim(args.sim)
     else:
         run_game()
 
