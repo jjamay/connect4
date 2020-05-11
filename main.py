@@ -1,8 +1,11 @@
 import random
 import sys
+import argparse
 import pygame as pg
+
+import agent
+from sim import run_sim
 from board import Board
-from agent import Agent
 
 
 def draw_board(screen, board):
@@ -19,15 +22,14 @@ def draw_board(screen, board):
     pg.display.update()
 
 
-def display_message(screen, player_win):
+def display_message(screen, msg):
     font = pg.font.Font(None, 100)
-    message = "You Won!" if player_win else "You Lost!"
-    print(message)
-    label = font.render(message, True, Board.RED)
+    print(msg)
+    label = font.render(msg, True, Board.BLACK)
     screen.blit(label, (200, Board.HEIGHT))
 
 
-def main():
+def run_game():
     pg.init()
     # Extra space at the bottom to display win/loss message
     size = (Board.WIDTH, Board.HEIGHT + Board.SQUARESIZE)
@@ -39,7 +41,6 @@ def main():
 
     turn = random.randint(Board.PLAYER, Board.AGENT)
     game_over = False
-    agent = Agent()
 
     while not game_over:
         if turn == Board.PLAYER:
@@ -54,21 +55,36 @@ def main():
                 if col in board.valid_moves():
                     board = board.drop_piece(col, Board.PLAYER)
                     if board.is_win(Board.PLAYER):
-                        display_message(screen, True)
+                        display_message(screen, "You Won!")
+                        game_over = True
+                    if board.is_tie():
+                        display_message(screen, "Tied Game!")
                         game_over = True
                     draw_board(screen, board)
-                    turn = turn % 2 + 1
+                    turn = Board.AGENT
 
         if turn == Board.AGENT and not game_over:
             col = agent.move(board)
             board = board.drop_piece(col, Board.AGENT)
             if board.is_win(Board.AGENT):
-                display_message(screen, False)
+                display_message(screen, "You Lost!")
+                game_over = True
+            if board.is_tie():
+                display_message(screen, "Tied Game!")
                 game_over = True
             draw_board(screen, board)
-            turn = turn % 2 + 1
+            turn = Board.PLAYER
 
-    pg.time.wait(5000)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--sim', action='store_true')
+
+    args = parser.parse_args()
+    if args.sim:
+        run_sim()
+    else:
+        run_game()
 
 
 if __name__ == '__main__':

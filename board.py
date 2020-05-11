@@ -78,14 +78,11 @@ class Board:
                 yield list(self.grid[range(row, row-self.WIN, -1), range(col, col+self.WIN)])
 
     def is_terminal(self):
-        if list(self.grid[0, :]).count(0) == 0:
-            # all positions filled
-            return True
+        return self.is_tie() or self.is_win(self.PLAYER) or self.is_win(self.AGENT)
 
-        if self.is_win(self.PLAYER) or self.is_win(self.AGENT):
-            return True
-
-        return False
+    def is_tie(self):
+        # all positions filled
+        return list(self.grid[0, :]).count(0) == 0
 
     def is_win(self, piece):
         for window in self.get_windows():
