@@ -75,6 +75,8 @@ def run_game():
             draw_board(screen, board)
             turn = Board.PLAYER
 
+    pg.time.wait(5000)
+
 
 def main():
     parser = argparse.ArgumentParser()

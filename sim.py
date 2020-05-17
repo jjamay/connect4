@@ -11,6 +11,7 @@ def sim_game():
         Board.PLAYER: agent.move,
         Board.AGENT: random_move
     }
+
     board = Board()
     turn = random.randint(Board.PLAYER, Board.AGENT)
     while True:

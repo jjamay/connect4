@@ -18,7 +18,7 @@ def score_move(board, col):
     return minimax(next_board, 3, False, board.AGENT)
 
 
-def minimax(board, depth, maximizing_agent, piece):
+def minimax(board, depth, maximizing_agent, piece, alpha=-np.Inf, beta=np.Inf):
     if depth == 0 or board.is_terminal():
         # reward/penalize quicker wins/losses more heavily
         return (depth + 1) * board.get_heuristic(piece)
@@ -29,11 +29,18 @@ def minimax(board, depth, maximizing_agent, piece):
         for col in valid_moves:
             next_board = board.drop_piece(col, piece)
             value = max(value, minimax(
-                next_board, depth-1, False, piece))
+                next_board, depth-1, False, piece, alpha, beta))
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
+
     else:
         value = np.Inf
         for col in valid_moves:
             next_board = board.drop_piece(col, piece % 2+1)
             value = min(value, minimax(
-                next_board, depth-1, True, piece))
+                next_board, depth-1, True, piece, alpha, beta))
+            beta = min(beta, value)
+            if alpha >= beta:
+                break
     return value
