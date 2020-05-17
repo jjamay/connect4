@@ -9,7 +9,7 @@ You will need [pipenv](https://github.com/pypa/pipenv) and [pyenv](https://githu
 
 ```
 pipenv install
-pipenv run main.py
+pipenv run python main.py
 ```
 
 ## Running Simulated Games
@@ -17,7 +17,7 @@ pipenv run main.py
 There is also an option to run a series of game simulations, which pits the MiniMax agent against an agent that just makes random moves (assuming they are valid). You can run the simulations by:
 
 ```
-pipenv run main.py [--sim N]
+pipenv run python main.py [--sim N]
 ```
 
 where N is how many games you want to run (default 10).
