@@ -20,7 +20,7 @@ There is also an option to run a series of game simulations, which pits the Mini
 pipenv run main.py [--sim N]
 ```
 
-where N is how many games you want to run.
+where N is how many games you want to run (default 10).
 
 ## Future Work
 
